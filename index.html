@@ -23,7 +23,7 @@
     // Load the model
     const loader = new THREE.GLTFLoader();
     loader.load(
-        '/raw/main/kabina2.0.glb', // Replace with your model's file path
+        'https://raw.githubusercontent.com/<bagatskyivan>/<kabinagpt>/main/kabina2.0.glb', // Replace with your model's file path
         function (gltf) {
             scene.add(gltf.scene);
             animate();
