@@ -1,73 +1,25 @@
+<!--
+  EYE FREE MODEL 3D BY Oscar creativo by OSCAR CREATIVO is licensed under Creative Commons Attribution.
+  Juvenile Teratophoneus curriei byrankinstudio is licensed under Creative Commons Attribution.
+-->
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>3D Model Viewer</title>
-    <style>
-        body { margin: 0; }
-        canvas { display: block; }
-    </style>
-</head>
-<body>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
-<script>
-    // Basic setup
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
-    const renderer = new THREE.WebGLRenderer({ antialias: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    document.body.appendChild(renderer.domElement);
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>A $4INA IS EVERYWHERE</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  </head>
+  <body>
+    <header>
+      <h1>A $4INA IS EVERYWHERE</h1>
+    </header>
 
-    // Add a background color to the scene
-    renderer.setClearColor(0xaaaaaa);
+    <main>
+      <div id="container3D"></div>
+    </main>
 
-    // Load the model
-    const loader = new THREE.GLTFLoader();
-    loader.load(
-        'https://raw.githubusercontent.com/<bagatskyivan>/<kabinagpt>/main/kabinagpt',
-        function (gltf) {
-            const model = gltf.scene;
-            scene.add(model);
-
-            // Adjust the position and rotation of the model if necessary
-            model.position.set(0, 0, 0);
-            model.rotation.y = Math.PI / 2;
-
-            // Set the camera position
-            camera.position.set(0, 1.5, 3);
-            camera.lookAt(0, 1, 0);
-
-            // Start animation loop
-            animate();
-        },
-        undefined,
-        function (error) {
-            console.error('An error happened', error);
-        }
-    );
-
-    // Add lighting
-    const ambientLight = new THREE.AmbientLight(0x404040, 2); // soft white light
-    scene.add(ambientLight);
-
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
-    directionalLight.position.set(1, 1, 1).normalize();
-    scene.add(directionalLight);
-
-    // Animation loop
-    function animate() {
-        requestAnimationFrame(animate);
-        renderer.render(scene, camera);
-    }
-
-    // Resize handler
-    window.addEventListener('resize', () => {
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
-        renderer.setSize(window.innerWidth, window.innerHeight);
-    });
-</script>
-</body>
+    <script type="module" src="js/main.js"></script>
+    
+  </body>
 </html>
