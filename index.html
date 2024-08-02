@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Model with ChatGPT</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/jsm/loaders/GLTFLoader.js"></script>
+    <style>
+        body { margin: 0; }
+        canvas { display: block; }
+        #chat-container { position: absolute; top: 10px; left: 10px; background: rgba(255, 255, 255, 0.8); padding: 10px; }
+    </style>
+</head>
+<body>
+    <div id="container"></div>
+    <div id="chat-container">
+        <input type="text" id="question-input" placeholder="Enter your question">
+        <button id="ask-button">Ask</button>
+        <p id="response"></p>
+    </div>
+    <script type="module">
+        import { GLTFLoader } from 'https://cdn.jsdelivr.net/npm/three@0.128.0/examples/jsm/loaders/GLTFLoader.js';
+
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.getElementById('container').appendChild(renderer.domElement);
+
+        const loader = new GLTFLoader();
+        loader.load('https://raw.githubusercontent.com/ваш-користувач/ваш-репозиторій/main/ваша-модель.glb', function(gltf) {
+            scene.add(gltf.scene);
+            gltf.scene.scale.set(0.5, 0.5, 0.5);
+            animate();
+        });
+
+        camera.position.z = 5;
+
+        function animate() {
+            requestAnimationFrame(animate);
+            renderer.render(scene, camera);
+        }
+
+        document.getElementById('ask-button').addEventListener('click', async () => {
+            const question = document.getElementById('question-input').value;
+            const response = await fetch('http://localhost:5000/ask', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ question })
+            });
+            const data = await response.json();
+            document.getElementById('response').innerText = data.answer;
+        });
+    </script>
+</body>
+</html>
