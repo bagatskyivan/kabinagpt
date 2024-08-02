@@ -16,28 +16,45 @@
     // Basic setup
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
-    const renderer = new THREE.WebGLRenderer();
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild(renderer.domElement);
+
+    // Add a background color to the scene
+    renderer.setClearColor(0xaaaaaa);
 
     // Load the model
     const loader = new THREE.GLTFLoader();
     loader.load(
-        'https://raw.githubusercontent.com/<bagatskyivan>/<kabinagpt>/main/kabina2.0.glb', // Replace with your model's file path
+        'https://raw.githubusercontent.com/<bagatskyivan>/<kabinagpt>/main/kabina2.0.glb',
         function (gltf) {
-            scene.add(gltf.scene);
+            const model = gltf.scene;
+            scene.add(model);
+
+            // Adjust the position and rotation of the model if necessary
+            model.position.set(0, 0, 0);
+            model.rotation.y = Math.PI / 2;
+
+            // Set the camera position
+            camera.position.set(0, 1.5, 3);
+            camera.lookAt(0, 1, 0);
+
+            // Start animation loop
             animate();
         },
         undefined,
         function (error) {
-            console.error(error);
+            console.error('An error happened', error);
         }
     );
 
-    // Lighting
-    const light = new THREE.DirectionalLight(0xffffff, 1);
-    light.position.set(1, 1, 1).normalize();
-    scene.add(light);
+    // Add lighting
+    const ambientLight = new THREE.AmbientLight(0x404040, 2); // soft white light
+    scene.add(ambientLight);
+
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+    directionalLight.position.set(1, 1, 1).normalize();
+    scene.add(directionalLight);
 
     // Animation loop
     function animate() {
@@ -51,9 +68,6 @@
         camera.updateProjectionMatrix();
         renderer.setSize(window.innerWidth, window.innerHeight);
     });
-
-    // Set initial camera position
-    camera.position.z = 5;
 </script>
 </body>
 </html>
